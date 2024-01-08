@@ -1,0 +1,16 @@
+﻿@model IEnumerable<EL.ViewModel.ServiceViewModel>
+
+<link rel="stylesheet" href="~/css/services.css">
+<div class="row">
+    @foreach (var service in Model)
+    {
+        <div class="col-md-2">
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="@($"service-{service.Id}")"
+                       name="selectedServices" value="@service.Id"
+                @(ViewBag.SelectionStatus[service.Id] ? "checked" : "")> <!-- Pre-select if ID is in the selected list -->
+                <label class="form-check-label" for="@($"service-{service.Id}")">@service.ServiceName</label>
+            </div>
+        </div>
+    }
+</div>

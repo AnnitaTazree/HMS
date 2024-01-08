@@ -1,0 +1,173 @@
+﻿@model EL.ViewModel.RegistrationViewModel
+
+
+
+<main class="main overflow-hidden">
+
+    <!--------- Registration area start --------->
+    <section class="login__area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    
+                    <div class="login__wrap">
+                        <div class="login__single__blk">
+                            <h2>Hotel Management System <span>registration</span></h2>
+                        </div>
+                        @Html.HiddenFor(model => model.Id)
+                        <div class="login__single__blk">
+                            @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeholder = "First name here", required = "required" })
+                        </div>
+                        <div class="login__single__blk">
+                            @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeholder = "Last name here", required = "required" })
+                        </div>
+                        <div class="login__single__blk">
+                            @Html.TextBoxFor(model => model.Username, new { @class = "form-control", @placeholder = "Your name here", required = "required" })
+                        </div>
+                        <div class="login__single__blk">
+                            @Html.DropDownListFor(model => model.Gender, Model.GenderList, new { @class = "form-control", required = "required" })
+                        </div>
+                        <div class="login__single__blk">
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Your email here", required = "required" })
+                        </div>
+                        <div class="login__single__blk">
+                            @Html.TextBoxFor(model => model.ContactNumber, new { @class = "form-control", @placeholder = "Your contact number here", required = "required" })
+                        </div>
+                        <div class="login__single__blk">
+                            @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @placeholder = "Your address here", required = "required" })
+                        </div>                                                
+                        <div class="login__single__blk">
+                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Your password here", required = "required" })
+                            <i class="fas fa-eye eye-icon position-relative" id="pass-eye" name="passEye"></i>
+                        </div>
+                        <div class="login__single__blk">
+                            @Html.PasswordFor(model => model.RepeatPassword, new { @class = "form-control", @placeholder = "Repeat your password", required = "required" })
+                            <i class="fa-solid fa-eye eye-icon position-relative" id="pass-eye" name="passEye"></i>
+                        </div>
+                        <div class="login__single__blk">
+                            @Html.DropDownListFor(model => model.Role, Model.RoleList, new { @class = "form-control", required = "required" })
+                        </div>
+                        <div class="login__single__blk">
+                            @Html.DropDownListFor(model => model.Shift, Model.ShiftList, new { @class = "form-control", required = "required" })
+                        </div>
+                        <div class="login__single__blk">
+                            <button type="button" id="btnSave">registration now</button>
+                        </div>
+                        <div class="text-center mt-4">
+                            <a href="/index" class="home-btn">Go To Home</a>
+                        </div>
+                    </div>
+                    
+                    @* @if (Model.successMessage.Length > 0)
+                    {
+                        <div class="row mb-3">
+                            <div class="col-sm-9">
+                                <div class="alert alert-warning alert-dismissble fade show" role="alert">
+                                    <strong>@Model.successMessage</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        </div>
+                    } *@
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--------- Registration area end --------->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+        <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true">
+            <!-- Toasts will be appended here -->
+        </div>
+    </div>
+</main>
+
+@section scripts{
+    <script type="text/javascript">
+        function showToast(message, type) {
+            var toast = `<div class="toast bg-${type} text-white" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                                                                        <div class="toast-body d-flex justify-content-between align-items-start">
+                                                                            <div>${message}</div>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                                                        </div>
+                                                                    </div>`;
+
+            $('#toast-container').append(toast);
+
+            var toastElement = $('.toast').last();
+            var toast = new bootstrap.Toast(toastElement, { autohide: true });
+            toast.show();
+        }
+        $(document).ready(function () {
+
+            var btnSave = $("#btnSave");
+            // Get the URL path
+            var urlPath = window.location.pathname;
+
+            // Extract the last part of the URL path (the ID)
+            var parts = urlPath.split("/");
+            var id = parts[parts.length - 1];
+
+            // Check if the ID is numeric
+            if ($.isNumeric(id)) {
+                btnSave.text("Update Info");
+                $("#Password").prop("disabled", true);
+                $("#RepeatPassword").prop("disabled", true);
+            }
+            
+
+
+            $("#btnSave").click(function () {
+                var id = $("#Id").val();
+                var firstName = $("#FirstName").val();
+                var lastName = $("#LastName").val();
+                var username = $("#Username").val();
+                var gender = $("#Gender").val();
+                var email = $("#Email").val();
+                var conNumber = $("#ContactNumber").val();
+                var address = $("#Address").val();
+                var password = $("#Password").val();
+                var rptPass = $("#RepeatPassword").val();
+                var role = $("#Role").val();
+                var shift = $("#Shift").val();
+                if (password !== rptPass) {
+                    alert("Password did not matched!!!");
+                    return;
+                } else {
+                    var data = {
+                        Id: id,
+                        FirstName: firstName,
+                        LastName: lastName,
+                        Username: username,
+                        Gender: gender,
+                        Email: email,
+                        ContactNumber: conNumber,
+                        Address: address,
+                        Password: password,
+                        RepeatPassword: rptPass,
+                        Role: role,
+                        Shift: shift,
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("CreateRegistration", "Registration")",
+                        data: data,
+                        success: function (data) {
+                            if (data.success) {
+                                showToast(data.message, 'success');
+                                location.href = "@Url.Action("EmployeeList", "Registration")";
+
+                            }
+                            else {
+                                showToast(data.message, 'warning');
+                            }
+                        }
+
+                    });
+                }
+
+            });
+        });
+    </script>
+    
+}

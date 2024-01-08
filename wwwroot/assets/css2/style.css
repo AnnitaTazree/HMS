@@ -1,0 +1,544 @@
+/* Base CSS */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.alignleft {
+    float: left;
+    margin-right: 15px;
+}
+
+.alignright {
+    float: right;
+    margin-left: 15px;
+}
+
+.aligncenter {
+    display: block;
+    margin: 0 auto 15px;
+}
+
+a:focus {
+    outline: 0 solid
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0 0 15px;
+    color: #333333;
+    font-weight: 800;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl,
+.container-xxl {
+    max-width: 1200px;
+}
+
+ul {
+    list-style: none;
+}
+
+.bg-orange {
+    background: orange;
+}
+
+    .bg-orange:hover {
+        background: rgb(226, 147, 0);
+    }
+
+.bg-gray {
+    background: rgb(224, 224, 224);
+}
+
+    .bg-gray:hover {
+        background: rgb(205, 205, 205);
+    }
+
+/*-------------------- Header area css start --------------------*/
+
+.header__main__blk {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0px;
+}
+
+.header__right__blk {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+    .header__right__blk a {
+        color: black;
+        font-size: 15px;
+        font-weight: 400;
+        text-transform: capitalize;
+        transition: .3s;
+        border: 2px solid #fff;
+        padding: 5px 8px;
+        border-radius: 8px;
+    }
+
+        .header__right__blk a:hover {
+            border-color: rgb(255, 119, 0);
+            border: 2px solid rgb(255, 119, 0);
+        }
+
+.header__left__blk {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+.header__logo a {
+    color: black;
+    font-size: 35px;
+    font-weight: 900;
+    transition: .3s;
+}
+
+    .header__logo a:hover {
+        color: orange;
+    }
+
+.header__menu ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+    .header__menu ul li a {
+        font-size: 15px;
+        font-weight: 400;
+        transition: .3s;
+        text-transform: capitalize;
+        color: black;
+        border: 2px solid #fff;
+        padding: 5px 12px;
+        border-radius: 8px;
+    }
+
+        .header__menu ul li a:hover {
+            border-color: rgb(255, 119, 0);
+            border: 2px solid rgb(255, 119, 0);
+        }
+
+    .header__menu ul li.dropdown-link {
+        position: relative;
+    }
+
+        .header__menu ul li.dropdown-link::after {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-top: 1px solid #000;
+            border-right: 1px solid #000;
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: rotate(135deg) translate(-100%);
+        }
+
+    .header__menu ul li.manage-booking-link ul.manage-booking-dropdown {
+        position: absolute;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        z-index: 3;
+        background: #fff;
+        padding: 0 5px 5px;
+        display: none;
+        box-shadow: 0 0 10px 5px rgba(0, 0, 0, .05);
+    }
+
+        .header__menu ul li.manage-booking-link ul.manage-booking-dropdown li {
+            width: 100%;
+        }
+
+            .header__menu ul li.manage-booking-link ul.manage-booking-dropdown li a {
+                width: 100%;
+                display: block;
+            }
+
+    .header__menu ul li.manage-booking-link:focus-within ul.manage-booking-dropdown {
+        display: block;
+    }
+
+/*-------------------- Header area css end --------------------*/
+
+
+
+
+/*-------------------- Hero area css start --------------------*/
+
+.hero__area {
+    padding-bottom: 30px;
+}
+
+.hero__slider__content {
+    background-color: red;
+    padding: 200px 100px;
+    background-image: url(../img/slider_img.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+    .hero__slider__content::after {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        content: "";
+        background-color: #000;
+        opacity: .5;
+    }
+
+.hero__title h1 {
+    color: #fff;
+    font-size: 85px;
+    text-transform: capitalize;
+    margin-bottom: 0;
+}
+
+.hero__subtitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+    .hero__subtitle h4 {
+        color: #fff;
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+
+    .hero__subtitle span {
+        width: 60px;
+        height: 2px;
+        background-color: #fff;
+    }
+
+/*-------------------- Hero area css end --------------------*/
+
+
+
+
+.login__area {
+    padding: 60px 0px;
+}
+
+
+
+.login__area {
+    padding: 60px 0px;
+    background-image: url(../img/lock.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+    .login__area .container {
+        max-width: 600px;
+    }
+
+.login__wrap {
+    background-color: rgba(0, 0, 0, .2);
+    border-radius: 10px;
+    padding: 40px;
+}
+
+.login__single__blk {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+    .login__single__blk h2 {
+        color: #fff;
+        font-size: 26px;
+        text-transform: capitalize;
+        margin-bottom: 0;
+    }
+
+        .login__single__blk h2 span {
+            color: darkorange;
+        }
+
+    .login__single__blk:last-child {
+        margin-bottom: 0;
+    }
+
+    .login__single__blk input {
+        width: 100%;
+        height: 44px;
+        border: none;
+        outline: none;
+        padding: 5px 20px;
+        color: #000;
+        font-size: 16px;
+        font-weight: 400;
+        border-radius: 4px;
+    }
+
+    .login__single__blk button {
+        width: 100%;
+        height: 44px;
+        background-color: darkorange;
+        border: none;
+        outline: none;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: capitalize;
+        border-radius: 4px;
+        transition: .3s;
+    }
+
+        .login__single__blk button:hover {
+            background-color: lightseagreen;
+            color: #fff;
+        }
+
+    .login__single__blk:first-child {
+        margin-bottom: 30px;
+    }
+
+.eye-icon {
+    top: 50%;
+    right: -224px;
+    transform: translateY(-200%);
+    cursor: pointer;
+}
+
+.home-btn {
+    padding: 12px 20px;
+    background-color: darkorange;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: capitalize;
+    border-radius: 4px;
+    transition: .3s;
+    margin: auto;
+}
+
+    .home-btn:hover {
+        background-color: lightseagreen;
+        color: #fff;
+    }
+
+/*-------------------- Login area css end --------------------*/
+
+
+/*-------------------- Add booking css start --------------------*/
+.add-booking-form label {
+    margin-bottom: 5px;
+}
+
+.add-booking-form input,
+.add-booking-form select {
+    width: 100%;
+    padding: 10px;
+}
+
+    .add-booking-form input[type="submit"],
+    .add-booking-form .cancel-btn {
+        width: auto;
+        border: none;
+    }
+/*-------------------- Add booking css end --------------------*/
+
+
+/*-------------------- Search Box css start --------------------*/
+.search-box input {
+    padding: 5px;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid rgba(0, 0, 0, .3);
+    width: 300px;
+}
+
+.search-box button {
+    padding: 5px 15px;
+    border: 1px solid orange;
+    background: orange;
+    border-radius: 0 5px 5px 0;
+    margin-left: -5px;
+}
+
+    .search-box button:hover {
+        background: rgb(219, 143, 0);
+    }
+/*-------------------- Search Box css end --------------------*/
+
+
+/*-------------------- Payment Method css start --------------------*/
+.payment-methods {
+    box-shadow: 2px 2px 10px 5px rgba(0, 0, 0, .05);
+    border-radius: 10px;
+    padding: 50px;
+}
+
+    .payment-methods input {
+        border: 1px solid rgba(0, 0, 0, .2);
+        border-radius: 10px;
+    }
+
+    .payment-methods label img {
+        width: 80px;
+        margin-left: 10px;
+    }
+
+    .payment-methods .checkout-btn {
+        border: 1px solid orange;
+        background: none;
+        font-size: 18px;
+        color: orange;
+        transition: 0.3s ease;
+        border-radius: 10px;
+    }
+
+        .payment-methods .checkout-btn:hover {
+            background: orange;
+            color: #000;
+        }
+
+.payment-method-divider {
+    width: 1px;
+    height: 100%;
+    background: rgba(0, 0, 0, .2);
+}
+
+.payment-slip-popup {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    border: 1px solid #333333;
+    border-radius: 15px;
+    padding: 20px 30px;
+    display: none;
+}
+
+    .payment-slip-popup .ok-btn {
+        padding: 10px 50px;
+        background: none;
+        border-radius: 10px;
+        border: 2px solid orange;
+        transition: 0.3s ease;
+    }
+
+    .payment-slip-popup .cancel {
+        padding: -2px 2px;
+        font-size: 14px;
+        background: none;
+        border-radius: 50%;
+        border: 2px solid #333333;
+        transition: 0.3s ease;
+        position: absolute;
+        top: -10px;
+        right: -20px;
+    }
+
+    .payment-slip-popup .ok-btn:hover {
+        background: orange;
+    }
+
+    .payment-slip-popup .cancel:hover {
+        background: #333;
+        color: #fff;
+    }
+/*-------------------- Payment Method css end --------------------*/
+
+
+/*-------------------- Add Service css start --------------------*/
+.add-service-popup {
+    background: #fff;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 40px;
+    border: 1px solid #333;
+    border-radius: 15px;
+    display: none;
+}
+
+    .add-service-popup input {
+        margin: 10px 10px 10px 0;
+    }
+/*-------------------- Add Service css end --------------------*/
+
+
+.profile-icon {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+    .profile-icon img {
+        width: 40px;
+        height: 40px;
+    }
+
+.profile-menu {
+    display: none;
+    position: absolute;
+    top: 100%; /* Position below the profile icon */
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+    .profile-menu.show {
+        display: block;
+    }
+
+    .profile-menu a {
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        color: #333;
+    }
+
+        .profile-menu a:hover {
+            background-color: #f2f2f2;
+        }

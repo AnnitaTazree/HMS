@@ -1,0 +1,68 @@
+﻿@model EL.ViewModel.CheckOutModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <h3 class="text-center mt-5 mb-4">All Bookings</h3>
+
+
+    <div class="d-flex justify-content-between align-items-center mt-5 mb-4">
+        <a href="../Booking/CheckIn" class="d-inline-block btn bg-orange">Create New</a>
+
+        <div class="search-box">
+            <input type="text" placeholder="Search..." id="searchValue" class="search-box">
+            <button class="search-btn" id="btnSearch"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+
+    <div id="BookingList"></div>  
+</div>
+
+@* @section scripts{
+    <script type="text/javascript"></script>
+        function GetBookListOnPageLoad() {
+
+            $("#BookingList").html("");
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("BooksList", "Book")",
+                success: function (response) {
+                    $("#BookList").html(response);
+                }
+            })
+        }
+        $(document).ready(function () {
+            GetBookListOnPageLoad();
+        });
+} *@
+
+@section scripts{
+    <script>
+        function GetBookingListOnPageLoad() {
+            $("#BookingList").html("");
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("BookingList", "Booking")",
+                success: function (response) {
+                    $("#BookingList").html(response);
+                }
+            })
+        }
+        $(document).ready(function () {
+            GetBookingListOnPageLoad();
+            $('#btnSearch').click(function () {
+                var searchTerm = $('#searchValue').val();
+                $.ajax({
+                    url: "@Url.Action("BookingList", "Booking")", // ASP.NET Core action method to handle the search
+                    type: 'GET',
+                    data: { searchTerm: searchTerm },
+                    success: function (data) {
+                        $('#BookingList').html(data);
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,113 @@
+﻿@model EL.ViewModel.RoomViewModel
+@{
+    ViewData["Title"] = "AddRoom";
+}
+
+<main class="main overflow-hidden">
+    <div class="container">
+        <h3 class="text-center mt-5 mb-4">Add Room</h3>
+        @Html.HiddenFor(model => model.RoomId)
+        <div class="add-booking-form py-4 px-5 w-75 mx-auto border">
+            <div class="row">
+                <div class="col-6 my-3">
+                    <label for="room-number" class="d-block">Room Number</label>
+                    @Html.TextBoxFor(model => model.RoomNo, new { @class = "form-control", @placeholder = "Enter Room No.", required = "required" })
+                </div>
+                <div class="col-6 my-3">
+                    <label for="room-type" class="d-block">Room Type</label>
+                    @Html.DropDownListFor(model => model.RoomType, Model.RoomTypeList, new { @class = "form-control", required = "required" })
+                </div>
+                <div class="col-6 my-3">
+                    <label for="room-type" class="d-block">AC/Non AC</label>
+                    @Html.DropDownListFor(model => model.AcNonAc, Model.AcNonAcList, new { @class = "form-control", required = "required" })
+                </div>
+                <div class="col-6 my-3">
+                    <label for="room-number" class="d-block">Room Bill</label>
+                    @Html.TextBoxFor(model => model.RoomBill, new { @class = "form-control", @placeholder = "Room Bill", required = "required" })
+                </div>
+                <div class="col-12 my-3">
+                    <!-- Add Booking button -->
+                    <button type="button" id="btnSave" class="btn bg-orange py-2 px-3 rounded me-2">Add Room</button>
+
+                    <!-- Cancel button with JavaScript redirection -->
+                    <button type="button" class="btn bg-gray py-2 px-3 cancel-btn rounded" onclick="redirectToRoomList()">Cancel</button>
+
+                </div>
+            </div>           
+            
+        </div>
+        
+    </div>
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+        <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true">
+            <!-- Toasts will be appended here -->
+        </div>
+    </div>
+</main>
+
+@section scripts{
+    <script type="text/javascript">
+        function showToast(message, type) {
+            var toast = `<div class="toast bg-${type} text-white" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                                                                                <div class="toast-body d-flex justify-content-between align-items-start">
+                                                                                    <div>${message}</div>
+                                                                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                                                                </div>
+                                                                            </div>`;
+
+            $('#toast-container').append(toast);
+
+            var toastElement = $('.toast').last();
+            var toast = new bootstrap.Toast(toastElement, { autohide: true });
+            toast.show();
+        }
+        $(document).ready(function () {
+            var btnSave = $("#btnSave");
+            // Get the URL path
+            var urlPath = window.location.pathname;
+
+            // Extract the last part of the URL path (the ID)
+            var parts = urlPath.split("/");
+            var id = parts[parts.length - 1];
+
+            // Check if the ID is numeric
+            if ($.isNumeric(id)) {
+                btnSave.text("Update Room");
+            }
+
+
+
+            $("#btnSave").click(function () {
+                var roomId = $("#RoomId").val();
+                var roomNo = $("#RoomNo").val();
+                var roomType = $("#RoomType").val();
+                var acNonAc = $("#AcNonAc").val();
+                var roomBill = $("#RoomBill").val();                
+                var data = {
+                    RoomId: roomId,
+                    RoomNo: roomNo,
+                    RoomType: roomType,
+                    AcNonAc: acNonAc,
+                    RoomBill: roomBill
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("CreateOrUpdateRoom", "Room")",
+                    data: data,
+                    success: function (data) {
+                        if (data.success) {
+                            showToast(data.message, 'success');
+                            location.href = '/Room';
+                        }
+                        else {
+                            showToast(data.message, 'warning');
+                        }
+                    }
+                }); 
+            });
+        });
+    </script>
+
+}
+
+

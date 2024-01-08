@@ -1,0 +1,145 @@
+﻿@model EL.ViewModel.BookingViewModel
+@{
+    ViewData["Title"] = "CheckOut";
+}
+
+<div class="container">
+
+    <!-- Guest info table start -->
+    <h3 class="text-center mt-5 mb-4">Guest Info</h3>
+
+    <table class="table mt-3">
+        <thead>
+            <tr class="table-primary">
+                <th scope="col">Room No</th>
+                <th scope="col">Room Types</th>
+                <th scope="col">AC/Non AC</th>
+                <th scope="col">Check In Date</th>
+                <th scope="col">Check Out Date</th>
+                <th scope="col">Bill</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="table-light">
+                <td>@Model.RoomNo</td>
+                <td>@Model.RoomType</td>
+                <td>@Model.Ac_NonAc</td>
+                <td>@Model.ArrDate</td>
+                <td>@Model.DripDate</td>
+                <td>@Model.TotalBillAmount</td>
+            </tr>
+        </tbody>
+    </table>
+    @Html.HiddenFor(model => model.BookingId)
+
+    <h3 class="text-center mt-5 mb-4">Payment</h3>
+
+    <div class="payment-methods w-50 mx-auto my-5">
+        <form action="">
+            <div class="row">
+                <div class="col-md-6 d-flex justify-content-around">
+                    <div class="form-check d-flex align-items-center">
+                        <input class="form-check-input" type="radio" name="Payment" id="bkash" value="Bkash" checked>
+                        <label class="form-check-label" for="bkash">
+                            <img src="~/assets/img/bkash.png" alt="Bkash">
+                        </label>
+                    </div>
+                    <div class="form-check d-flex align-items-center">
+                        <input class="form-check-input" type="radio" name="Payment" id="nagad" value="Nagad">
+                        <label class="form-check-label" for="nagad">
+                            <img src="~/assets/img/nagad.png" alt="Nagad">
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex justify-content-around">
+                    <div class="form-check d-flex align-items-center">
+                        <input class="form-check-input" type="radio" name="Payment" id="rocket" value="Rocket">
+                        <label class="form-check-label" for="rocket">
+                            <img src="~/assets/img/rocket-2.png" alt="Rocket">
+                        </label>
+                    </div>
+                    <div class="form-check d-flex align-items-center mt-2">
+                        <input class="form-check-input" type="radio" name="Payment" id="cash" value="Rocket">
+                        <label class="form-check-label ms-2 fs-2" for="cash">
+                            Cash
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <input type="tel" placeholder="Phone No." value="" class="d-block my-3 p-3 w-100" id="gPhone">
+                </div>
+                <div class="col-md-12">
+                    <input type="number" placeholder="Amount" value="" class="d-block my-3 p-3 w-100" id="amount">
+                </div>
+            </div>
+        </form>
+        <button class="py-3 px-5 w-100 mt-4 fw-bold checkout-btn" id="btnCheckOut">Check Out</button>
+    </div>
+
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+        <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true">
+            <!-- Toasts will be appended here -->
+        </div>
+    </div>
+    
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        //toaster
+        function showToast(message, type) {
+            var toast = `<div class="toast bg-${type} text-white" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                                                <div class="toast-body d-flex justify-content-between align-items-start">
+                                                    <div>${message}</div>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                                </div>
+                                            </div>`;
+
+            $('#toast-container').append(toast);
+
+            var toastElement = $('.toast').last();
+            var toast = new bootstrap.Toast(toastElement, { autohide: true });
+            toast.show();
+        }
+        $(document).ready(function () {
+            $("#btnCheckOut").click(function () {
+                var bookingId = $("#BookingId").val();
+                var data = {
+                    BookingId: bookingId
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("GeneratePDF", "Booking")",
+                    data: data,
+                    xhrFields: {
+                        responseType: 'blob' // Set the response type to blob
+                    },
+                    success: function (data) {
+                        // Create a Blob object from the response data
+                        var blob = new Blob([data], { type: 'application/pdf' });
+
+                        // Create a URL for the blob
+                        var url = window.URL.createObjectURL(blob);
+
+                        // Create a link element to trigger the download
+                        var a = document.createElement('a');
+                        a.href = url;
+                        a.download = "Invoice.pdf"; // Set the desired file name
+                        document.body.appendChild(a);
+                        a.click();
+
+                        // Clean up resources
+                        window.URL.revokeObjectURL(url);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error); // Handle any errors
+                    }
+                });
+            });
+
+        });
+    </script>
+
+}

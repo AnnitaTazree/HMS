@@ -1,0 +1,190 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using System.Security.Claims;
+@* @inject IHttpContextAccessor HttpContextAccessor; *@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HMS</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/HMS.styles.css" asp-append-version="true" />
+    <link href="~/assets/css2/style.css" rel="stylesheet" />
+</head>
+<body>
+    @* <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-primary border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">HMS</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Employee" asp-action="Index">Employee</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header> *@
+    <section class="header__area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="header__main__blk">
+                        <div class="header__left__blk">
+                            <div class="header__logo">
+                                <a href="@Url.Action("Index", "Home")">eHMSA</a>
+                            </div>
+                            @if(User.Identity.IsAuthenticated)
+                            {
+                                <div class="header__menu">
+                                    <ul>
+                                        @* <li><a href="@Url.Action("Index", "Home")">home</a></li> *@
+                                        <li class="manage-booking-link dropdown-link">
+                                            <a href="void:js">Manage Booking</a>
+                                            <ul class="manage-booking-dropdown">
+                                                <li><a href="@Url.Action("Index", "Booking")">All Bookings</a></li>
+                                                <li><a href="../../Booking/CheckIn">Check In</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="manage-booking-link dropdown-link">
+                                            <a href="void:js">Manage Room</a>
+                                            <ul class="manage-booking-dropdown">
+                                                <li><a href="@Url.Action("Index", "Room")">All Rooms</a></li>
+                                                <li><a href="../../Room/AddRoom">Add Room</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="@Url.Action("EmployeeList", "Registration")">Employee</a></li>
+                                        <li><a href="@Url.Action("Index", "Service")">Services</a></li>
+                                        <li><a href="#">privacy</a></li>
+                                    </ul>
+                                </div>
+                            }
+                            
+                        </div>
+                       
+                        @* <div class="header__right__blk">
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("UserRole") != null && HttpContextAccessor.HttpContext.Session.GetString("UserRole") == "Admin")
+                            {
+                                <a href="../../Registration/Index">register</a>
+                            }
+                            <a href="../../Login/Index">login</a>                            
+                            <a href="@Url.Action("Logout", "Login")">LogOut</a>                              
+                        </div> *@
+                        
+                        
+                            <div class="header__right__blk">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                            
+                                @if (User.HasClaim(c => c.Type == ClaimTypes.Role && c.Value == "Admin"))
+                                {
+                                    <!-- Show admin-specific content -->
+
+                                    <a href="../../Registration/Index">register</a>
+                                }
+                                <span class="nav-link text-dark" style="color:darkblue;">@User.FindFirstValue(ClaimTypes.Name)</span>
+                                <a href="@Url.Action("Logout", "Login")">Log Out</a>
+                                @* <div class="profile-icon">
+                                    <button class="profile-icon-btn" onclick="toggleProfileMenu()">
+                                        <img src="../wwwroot/assets/img/profileIcon.png" alt="Profile Icon">
+                                    </button>
+                                    <div class="profile-menu" id="profileMenu">
+                                        <a href="mailto:@User.FindFirstValue(ClaimTypes.Email)">Email: @User.FindFirstValue(ClaimTypes.Email)</a>
+                                        <a href="@Url.Action("Logout", "Login")">Log Out</a>
+                                    </div>
+                                </div> *@
+                                @* <div class="profile-icon" onclick="toggleProfileMenu()">
+                                    <a href="#">
+                                        <img src="../wwwroot/assets/img/profileIcon.png" alt="Profile Icon">
+                                    </a>
+                                    <div class="profile-menu" id="profileMenu">
+                                        <a href="mailto:@User.FindFirstValue(ClaimTypes.Email)">Email: @User.FindFirstValue(ClaimTypes.Email)</a>
+                                        <a href="@Url.Action("Logout", "Login")">Log Out</a>
+                                    </div>
+                                </div> *@
+                                @* <div class="profile-icon" onclick="toggleProfileMenu()">
+                                    <img src="../../assets/img/profileIcon.png" alt="Profile Icon">
+                                </div>
+                                <div class="profile-menu" id="profileMenu">
+                                    <a href="mailto:@User.FindFirstValue(ClaimTypes.Email)">Email: @User.FindFirstValue(ClaimTypes.Email)</a>
+                                    <a href="@Url.Action("Logout", "Login")">Log Out</a>
+                                </div> *@
+                                @* <div class="profile-icon" onclick="toggleProfileMenu()">
+                                    <img src="../../assets/img/profileIcon.png" alt="Profile Icon">
+                                </div>
+                                <div class="profile-menu" id="profileMenu">
+                                    <a href="mailto:@User.FindFirstValue(ClaimTypes.Email)">Email: @User.FindFirstValue(ClaimTypes.Email)</a>
+                                    <a href="@Url.Action("Logout", "Login")">Log Out</a>
+                                </div> *@
+                                @* <div class="profile-icon" onclick="toggleProfileMenu()">
+                                    <img src="../../assets/img/profileIcon.png" alt="Profile Icon">
+                                    <div class="profile-menu" id="profileMenu">
+                                        <a href="mailto:@User.FindFirstValue(ClaimTypes.Email)">Email: @User.FindFirstValue(ClaimTypes.Email)</a>
+                                        <a href="@Url.Action("Logout", "Login")">Log Out</a>
+                                    </div>
+                                </div> *@
+
+                                
+                                                            
+                            }
+                            else
+                            {
+                                <a href="../../Login/Index">login</a>
+                            }
+                            @* @if (HttpContextAccessor.HttpContext.Session.GetString("UserRole") != null)
+                            {
+                            if (HttpContextAccessor.HttpContext.Session.GetString("UserRole") == "Admin")
+                            {
+                            <a href="../../Registration/Index">register</a>
+                            }
+                            <span class="user-name">@HttpContextAccessor.HttpContext.Session.GetString("UserEmail")</span>
+                            <a href="@Url.Action("Logout", "Login")">LogOut</a>
+                            } *@
+                                
+
+                                
+                                
+                            </div>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer @* class="border-top footer text-muted" *@>
+        <div class="container">
+            &copy; 2023 - HMS @* - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> *@
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/ef1c910b94.js" crossorigin="anonymous"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+<script>
+    function toggleProfileMenu() {
+        var menu = document.getElementById("profileMenu");
+        var icon = document.querySelector(".profile-icon");
+
+        var iconPosition = icon.getBoundingClientRect();
+        menu.style.left = iconPosition.left + "px";
+        menu.style.top = (iconPosition.top + iconPosition.height) + "px";
+
+        menu.classList.toggle("show");
+    }
+</script>

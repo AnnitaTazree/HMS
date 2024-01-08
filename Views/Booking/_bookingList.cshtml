@@ -1,0 +1,47 @@
+﻿@model IEnumerable<EL.ViewModel.CheckOutModel>
+
+<table class="table table-sm">
+    <thead>
+        <tr class="table-primary">
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Contact No.</th>
+            <th>Room No</th>
+            <th>Room Types</th>
+            <th>AC/Non AC</th>
+            <th>Services</th>
+            <th>Total Bill</th>
+            <th>Arrive Date</th>
+            <th>Deprive Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="table-light">
+                <td>@item.CustomerName</td>
+                <td>@item.Gender</td>
+                <td>@item.Address</td>
+                <td>@item.Email</td>
+                <td>@item.ContactNumber</td>
+                <td>@item.RoomNo</td>
+                <td>@item.RoomType</td>
+                <td>@item.Ac_NonAc</td>
+                <td>@item.ServiceNames</td>
+                <td>@item.TotalAmount</td>
+                <td>@item.arrDate.ToString("dd-MM-yyyy")</td>
+                <td>@item.dripDate.ToString("dd-MM-yyyy")</td>
+                <td>
+                    @Html.ActionLink("Edit", "CheckIn", new { id = item.BookingId }, new { @class = "btn btn-sm btn-warning" })
+
+                    @Html.ActionLink("Delete", "Delete", new { id = item.BookingId }, new { @class = "btn btn-sm btn-danger" })
+
+                    @Html.ActionLink("Check Out", "CheckOut", new { id = item.BookingId }, new { @class = "btn btn-sm btn-success" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,84 @@
+﻿@model EL.ViewModel.UserLoginViewModel
+
+<main class="main overflow-hidden">
+
+    <!--------- Login area start --------->
+    <section class="login__area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form method="POST">
+                        <div class="login__wrap">
+                            <div class="login__single__blk">
+                                <h2><span>Log In</span></h2>
+                            </div>                            
+                            <div class="login__single__blk">
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Your email here", required = "required" })
+                            </div>
+                            <div class="login__single__blk position-relative">
+                                @Html.PasswordFor(model => model.Password, new { @class = "form-control", required = "required" })
+                                <i class="fa-solid fa-eye eye-icon position-relative" id="pass-eye" name="passEye"></i>
+                            </div>
+                            <div class="login__single__blk">
+                                <button type="button" id="btnSave">Log In</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--------- Login area end --------->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+        <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true">
+            <!-- Toasts will be appended here -->
+        </div>
+    </div>
+</main>
+
+@section scripts{
+    <script type="text/javascript">
+        function showToast(message, type) {
+            var toast = `<div class="toast bg-${type} text-white" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                                                                <div class="toast-body d-flex justify-content-between align-items-start">
+                                                                    <div>${message}</div>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                                                </div>
+                                                            </div>`;
+
+            $('#toast-container').append(toast);
+
+            var toastElement = $('.toast').last();
+            var toast = new bootstrap.Toast(toastElement, { autohide: true });
+            toast.show();
+        }
+        $(document).ready(function () {
+            $("#btnSave").click(function () {
+                var email = $("#Email").val();
+                var password = $("#Password").val();
+                var data = {
+                    Email: email,
+                    Password: password
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("AuthenticateUser", "Login")",
+                    data: data,
+                    success: function (data) {
+                        if (data.success) {
+                            location.href = "@Url.Action("Index", "Home")"
+                        }
+                        else {
+                            showToast(data.message, 'danger');
+                        }
+
+                    }
+
+                });
+                
+
+            });
+        });
+    </script>
+
+}

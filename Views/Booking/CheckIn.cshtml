@@ -1,0 +1,240 @@
+﻿@model EL.ViewModel.BookingViewModel
+@{
+    ViewData["Title"] = "Booking";
+}
+
+<div class="container">
+    <h3 class="text-center mt-5 mb-4">Add Booking</h3>
+    <form action="" class="add-booking-form py-4 px-5 mx-auto border">
+        @Html.HiddenFor(model => model.BookingId)
+        @Html.HiddenFor(model => model.CustomerId)
+        @Html.HiddenFor(model => model.RoomId)
+        @Html.HiddenFor(model => model.BillId)
+        @Html.HiddenFor(model => model.Services)
+        @* @Html.HiddenFor(model => model.ArrDate)
+        @Html.HiddenFor(model => model.DripDate) *@
+        <div class="row">
+
+            <div class="col-3 my-3">
+                <label for="first-name" class="d-block">First Name</label>
+                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeholder = "Enter First Name", required = "required" })
+                @* <input type="text" id="first-name" name="first-name" placeholder="Enter First Name"> *@
+            </div>
+
+            <div class="col-3 my-3">
+                <label for="last-name" class="d-block">Last Name</label>
+                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeholder = "Enter Last Name", required = "required" })
+                @* <input type="text" id="last-name" name="last-name" placeholder="Enter Last Name"> *@
+            </div>
+
+            <div class="col-3 my-3">
+                <label for="gender" class="d-block">Gender</label>
+                @Html.DropDownListFor(model => model.Gender, Model.GenderList, new { @class = "form-control", required = "required" })
+            </div>
+
+            <div class="col-3 my-3">
+                <label for="contact-no" class="d-block">Contact Number</label>
+                @Html.TextBoxFor(model => model.ContactNumber, new { @class = "form-control", @placeholder = "Enter Contact Number", required = "required" })
+            </div>
+          
+
+            <div class="col-3 my-3">
+                <label for="ac-non-ac" class="d-block">AC/Non AC</label>
+                @Html.DropDownListFor(model => model.Ac_NonAc, Model.AcNonAcList, new { @class = "form-control", required = "required" })
+            </div>
+
+            <div class="col-3 my-3">
+                <label for="type" class="d-block">Types</label>
+                @Html.DropDownListFor(model => model.RoomType, Model.RoomTypeList, new { @class = "form-control", required = "required" })
+            </div>
+            <div class="col-3 my-3">
+                <label for="bill-amount" class="d-block">Bill Amount</label>
+                @Html.TextBoxFor(model => model.BillAmount, new { @class = "form-control", @placeholder = "Enter Contact Number", required = "required" })
+            </div>
+            <div class="col-3 my-3">
+                <label for="arrive-date" class="d-block">Arrive Date</label>
+                @Html.EditorFor(model => model.ArrDate, new { htmlAttributes = new { @id = "firstDate", @class = "form-control" } })
+            </div>
+
+            <div class="col-3 my-3">
+                <label for="deprive-date" class="d-block">Deprive Date</label>
+                @Html.EditorFor(model => model.DripDate, new { htmlAttributes = new { @id = "secondDate", @class = "form-control" } })
+            </div>
+
+            <div class="col-3 my-3">
+                <label for="total-bill-amount" class="d-block">Total Bill Amount</label>
+                @Html.TextBoxFor(model => model.TotalBillAmount, new { @class = "form-control", @placeholder = "Enter Contact Number", required = "required" })
+            </div>
+
+            <div class="col-12 my-12">
+                <div id="services-container">
+
+                </div>
+            </div>          
+            
+
+            <div class="col-12 my-3">
+                <!-- Add Booking button -->
+                <button type="button" id="btnSave" class="btn bg-orange py-2 px-3 rounded me-2">Add Booking</button>
+
+                <!-- Cancel button with JavaScript redirection -->
+                <button type="button" class="btn bg-gray py-2 px-3 cancel-btn rounded" onclick="redirectToBookingList()">Cancel</button>
+                
+            </div>
+        </div>
+    </form>
+</div>
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+    <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true">
+        <!-- Toasts will be appended here -->
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        //toaster
+        function showToast(message, type) {
+            var toast = `<div class="toast bg-${type} text-white" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                                                <div class="toast-body d-flex justify-content-between align-items-start">
+                                                    <div>${message}</div>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                                </div>
+                                            </div>`;
+
+            $('#toast-container').append(toast);
+
+            var toastElement = $('.toast').last();
+            var toast = new bootstrap.Toast(toastElement, { autohide: true });
+            toast.show();
+        }
+
+        $(document).ready(function () {
+            $.ajax({
+                url: "@Url.Action("GetServices", "Service")",  // Replace with your actual route
+                method: 'GET',
+                data: { selectedServices: $("#Services").val() }, // Pass selected service IDs
+                success: function (data) {
+                    $('#services-container').html(data);
+                }
+            });
+
+            var btnSave = $("#btnSave");
+            // Get the URL path
+            var urlPath = window.location.pathname;
+
+            // Extract the last part of the URL path (the ID)
+            var parts = urlPath.split("/");
+            var id = parts[parts.length - 1];
+
+            // Check if the ID is numeric
+            if ($.isNumeric(id)) {
+                btnSave.text("Update Booking");
+            }
+
+
+
+
+            $("#secondDate").on("change", function () {
+                var firstDate = new Date($("#firstDate").val());
+                var secondDate = new Date($("#secondDate").val());
+
+                if (!isNaN(firstDate) && !isNaN(secondDate)) {
+                    var timeDiff = Math.abs(secondDate.getTime() - firstDate.getTime());
+                    var totalDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    var roomBill = parseInt($("#BillAmount").val());
+                    var totalRoomBill = (totalDays * roomBill);
+                    $("#TotalBillAmount").val(totalRoomBill);
+                    // // Update a placeholder with the calculated total days
+                    // $("#totalDays").text(totalDays);
+                }
+            });
+
+
+            $(document).on("change", "#RoomType", function (e) {
+                var AcNonAc = $("#Ac_NonAc").val();
+                var RoomType = $("#RoomType").val();
+                $.ajax({
+                    url: "@Url.Action("GetRoomBill", "Room")",
+                    type: "GET",
+                    data: {
+                        Ac_NonAc: AcNonAc,
+                        RoomType: RoomType
+                    },
+                    success: function (data) {
+                        $("#BillAmount").val(data.bill);
+                    },
+                    error: function () {
+                        // Handle errors
+                    }
+                });
+            });
+
+
+            $("#btnSave").click(function () {
+                //check box 
+                var selectedServices = [];
+                $("input[type='checkbox'][class='form-check-input']:checked").each(function () {
+                    selectedServices.push($(this).attr("id").replace("service-", ""));
+                });
+                $("#Services").val(selectedServices.join(","));
+
+
+
+                var BookingId = $("#BookingId").val();
+                var CustId = $("#CustomerId").val();
+                var RoomId = $("#RoomId").val();
+                var BillId = $("#BillId").val();
+                var FName = $("#FirstName").val();
+                var LName = $("#LastName").val();
+                var Gender = $("#Gender").val();
+                var ConNumber = $("#ContactNumber").val();
+                var AcNoAc = $("#Ac_NonAc").val();
+                var RoomType = $("#RoomType").val();
+                var BillAmt = $("#BillAmount").val();
+                var ADate = $("#firstDate").val();
+                var DDate = $("#secondDate").val();
+                var TotalBillAmt = $("#TotalBillAmount").val();
+                var servicesId = $("#Services").val();
+
+                var data = {
+                    BookingId: BookingId,
+                    CustomerId: CustId,
+                    RoomId: RoomId,
+                    BillId: BillId,
+                    FirstName: FName,
+                    LastName: LName,
+                    Gender: Gender,
+                    ContactNumber: ConNumber,
+                    Ac_NonAc: AcNoAc,
+                    RoomType: RoomType,
+                    BillAmount: BillAmt,
+                    ArrDate: ADate,
+                    DripDate: DDate,
+                    TotalBillAmount: TotalBillAmt,
+                    Services: servicesId,
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("CreateOrUpdate", "Booking")",
+                    data: data,
+                    success: function (data) {
+                        if (data.success) {
+                            showToast(data.message, 'success');
+                            location.href = "@Url.Action("Index", "Booking")";     
+                        }
+                        else {
+                            showToast(data.message, 'warning');
+                        }
+                    }
+
+                })
+
+            });
+            
+        });
+    </script>
+}
+
+
+

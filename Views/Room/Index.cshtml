@@ -1,0 +1,51 @@
+﻿@model IEnumerable<EL.ViewModel.RoomViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <h3 class="text-center mt-5 mb-4">All Rooms</h3>
+
+
+    <div class="d-flex justify-content-between align-items-center mt-5 mb-4">
+        <a href="../Room/AddRoom" class="d-inline-block btn bg-orange">Create New</a>
+
+        @* <div class="search-box">
+            <input type="text" placeholder="Search..." class="search-box">
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div> *@
+    </div>
+
+    <table class="table mt-3">
+        <thead>
+            <tr class="table-primary">
+                <th scope="col">Room No</th>
+                <th scope="col">Room Types</th>
+                <th scope="col">AC/Non AC</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="table-light">
+                    <td style="display:none;">@item.RoomId</td>
+                    <td>@item.RoomNo</td>
+                    <td>@item.RoomType</td>
+                    <td>@item.AcNonAc</td>
+                    <td>@item.Status</td>
+                    <td>
+                        @Html.ActionLink("Edit", "AddRoom", new { id = item.RoomId }, new { @class = "btn btn-sm btn-warning" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.RoomId }, new { @class = "btn btn-sm btn-danger" })
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+
+
+</div>
+
